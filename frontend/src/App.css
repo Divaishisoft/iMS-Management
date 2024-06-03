@@ -1,3 +1,8 @@
+body {
+  background-color: #eef9ff !important;
+  min-height: 100vh;
+}
+
 .guest-bg {
   width: 100%;
   height: 100vh;
@@ -27,7 +32,8 @@
 }
 
 .bg-primary-light {
-  background-color: #c6e4f5 !important;
+  /* background-color: #c6e4f5 !important; */
+  background-color: #eef9ff !important;
 }
 
 .text-primary {

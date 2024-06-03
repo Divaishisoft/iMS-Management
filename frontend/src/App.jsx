@@ -4,16 +4,22 @@ import Login from './GuestPages/Login'
 import NoPage from './GuestPages/NoPage'
 import Register from './GuestPages/Register'
 import ForgetPassword from './GuestPages/ForgetPassword'
+import DashboardIndex from './AuthPages/Pages/Dashboard/Index'
 
 function App() {
   return (
     <>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="*" element={<NoPage />} />
-        </Routes>
+      <Routes>
+        {/* Guest Routes */}
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="*" element={<NoPage />} />
+      
+        {/* Protected Routes */}
+        <Route path="/admin/dashboard" element={<DashboardIndex />} />
+      </Routes>
+      
     </>
   )
 }
