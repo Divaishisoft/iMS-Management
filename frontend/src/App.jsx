@@ -5,6 +5,7 @@ import NoPage from './GuestPages/NoPage'
 import Register from './GuestPages/Register'
 import ForgetPassword from './GuestPages/ForgetPassword'
 import DashboardIndex from './AuthPages/Pages/Dashboard/Index'
+import VendorList from './AuthPages/Pages/Vendors/List'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       
         {/* Protected Routes */}
         <Route path="/admin/dashboard" element={<DashboardIndex />} />
+        <Route path="/admin/vendors" element={<VendorList />} />
       </Routes>
       
     </>

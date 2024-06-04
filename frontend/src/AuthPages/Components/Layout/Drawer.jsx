@@ -17,6 +17,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -86,10 +93,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function DrawerIndex() {
+
+    const navigate = useNavigate()
+
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [menu, setMenu] = React.useState([
-        { menuItem: 'Dashboard', menuIcon: <DashboardIcon /> },
+        { menuItem: 'Dashboard', menuIcon: <DashboardIcon />, url:'/admin/dashboard' },
+        { menuItem: 'Vendors', menuIcon: <AddBusinessIcon />, url:'/admin/vendors' },
+        { menuItem: 'Customers', menuIcon: <PeopleAltIcon />, url:'/admin/customers' },
+        { menuItem: 'Items', menuIcon: <InventoryIcon />, url:'/admin/items' },
+        { menuItem: 'Day Book', menuIcon: <AutoStoriesIcon />, url:'/admin/day-book' },
+        { menuItem: 'Order Purchase', menuIcon: <ShoppingBagIcon />, url:'/admin/order-purchase' },
+        { menuItem: 'Order Sales', menuIcon: <ShoppingCartIcon />, url:'/admin/order-sales' },
     ])
 
     const handleDrawerOpen = () => {
@@ -106,7 +122,7 @@ export default function DrawerIndex() {
             <AppBar position="fixed" open={open}>
                 <Toolbar>
                     <IconButton
-                        color="inherit"
+                        color="black"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
@@ -117,8 +133,8 @@ export default function DrawerIndex() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        iMS
+                    <Typography variant="h6" className='text-dark' noWrap component="div">
+                        <span className='text-primary fw-bold'>iMS</span>
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -131,7 +147,7 @@ export default function DrawerIndex() {
                 <Divider />
                 <List>
                     {menu.map((val, index) => (
-                        <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+                        <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={()=>navigate(val?.url)}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,

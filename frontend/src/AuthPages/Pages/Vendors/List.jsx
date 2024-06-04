@@ -13,12 +13,14 @@ import { Link } from 'react-router-dom';
 import BarChartComponent from '../../Components/Charts/BarChart';
 import PieChartComponent from '../../Components/Charts/PieChart';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
-import LineChartComponent from '../../Components/Charts/LineChart';
 
-export default function DashboardIndex() {
+export default function VendorList() {
 
     const [breadcrumbs, setBreadcrumbs] = React.useState({
-        currentPage: 'Dashboard'
+        previousPages: [
+            { pageName: 'Dashboard', url: '/admin/dashboard' },
+        ],
+        currentPage: 'Vendors'
     })
     const [dashBoxes, setDashBoxes] = React.useState([
         { url: '/customers', icon: <PeopleAltIcon fontSize='large' />, menu: 'Customers' },
@@ -57,17 +59,11 @@ export default function DashboardIndex() {
                     }
                 </div>
                 <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-7">
                         <BarChartComponent />
                     </div>
-                    <div className="col-md-4">
-                        <br /><br />
+                    <div className="col-md-5">
                         <PieChartComponent />
-                    </div>
-                    <div className="col-md-4">
-                        <center>
-                            <LineChartComponent />
-                        </center>
                     </div>
                 </div>
             </Box>
