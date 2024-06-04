@@ -42,7 +42,11 @@ export default function DashboardIndex() {
                 <DrawerHeaderComponent />
                 
                 <div className='row'>
-                    <BreadcrumbsIndex breadcrumbs={breadcrumbs} />
+                    <div className="col-md-12 mb-3">
+                        <div className='bg-white rounded px-3 py-2 custom-shadow-light'>
+                            <BreadcrumbsIndex breadcrumbs={breadcrumbs} />
+                        </div>
+                    </div>
                     {
                         dashBoxes?.map((val,key)=>(
                             <div key={key} className="col-md-3 mb-4">

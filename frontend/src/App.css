@@ -20,7 +20,11 @@ body {
 }
 
 .custom-shadow {
-  box-shadow: rgb(38, 57, 77) 1px 5px 30px 0px;;
+  box-shadow: rgb(38, 57, 77) 1px 5px 30px 0px;
+}
+
+.custom-shadow-light {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .guest-body-width {
@@ -101,6 +105,16 @@ body {
   background: #02b2af !important;
   color: #fff !important;
   transition: 1s;
+}
+
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: baseline !important;
+}
+
+.css-yrdy0g-MuiDataGrid-columnHeaderRow {
+  background-color: #0092c021 !important;
 }
 
 @keyframes rotate {
