@@ -22,7 +22,7 @@ const Login = () => {
                 <div className='guest-body-bg guest-body-width p-4 custom-shadow rounded'>
                     <center>
                         <img src="/noPageFound.png" className='w-100' alt="/noPageFound.png" />
-                        <h3>No Page Found</h3>
+                        <h3 className='text-primary fw-bold'>No Page Found</h3>
                     </center>
                 </div>
             </div>

@@ -6,6 +6,13 @@ import Register from './GuestPages/Register'
 import ForgetPassword from './GuestPages/ForgetPassword'
 import DashboardIndex from './AuthPages/Pages/Dashboard/Index'
 import VendorList from './AuthPages/Pages/Vendors/List'
+import VendorForm from './AuthPages/Pages/Vendors/Form'
+import CustomerList from './AuthPages/Pages/Customers/List'
+import CustomerForm from './AuthPages/Pages/Customers/Form'
+import ItemList from './AuthPages/Pages/Items/List'
+import ItemForm from './AuthPages/Pages/Items/Form'
+import OrderPurchaseList from './AuthPages/Pages/OrderPurchase/List'
+import OrderPurchaseForm from './AuthPages/Pages/OrderPurchase/Form'
 
 function App() {
   return (
@@ -18,8 +25,29 @@ function App() {
         <Route path="*" element={<NoPage />} />
       
         {/* Protected Routes */}
+
+        {/* Dashboard */}
         <Route path="/admin/dashboard" element={<DashboardIndex />} />
+        
+        {/* Vendor */}
         <Route path="/admin/vendors" element={<VendorList />} />
+        <Route path="/admin/vendor-add" element={<VendorForm />} />
+        <Route path="/admin/vendor-edit/:id" element={<VendorForm />} />
+        
+        {/* Customer */}
+        <Route path="/admin/customers" element={<CustomerList />} />
+        <Route path="/admin/customer-add" element={<CustomerForm />} />
+        <Route path="/admin/customer-edit/:id" element={<CustomerForm />} />
+        
+        {/* Item */}
+        <Route path="/admin/items" element={<ItemList />} />
+        <Route path="/admin/item-add" element={<ItemForm />} />
+        <Route path="/admin/item-edit/:id" element={<ItemForm />} />
+        
+        {/* Order Purchase */}
+        <Route path="/admin/orders-purchase" element={<OrderPurchaseList />} />
+        <Route path="/admin/orders-purchase-add" element={<OrderPurchaseForm />} />
+        <Route path="/admin/orders-purchase-edit/:id" element={<OrderPurchaseForm />} />
       </Routes>
       
     </>

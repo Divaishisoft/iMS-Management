@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { DataGrid } from '@mui/x-data-grid';
 
-export default function VendorList() {
+export default function OrderPurchaseList() {
 
     const navigate = useNavigate()
 
@@ -21,12 +21,12 @@ export default function VendorList() {
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
         ],
-        currentPage: 'Vendors'
+        currentPage: 'Orders Purchase'
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [list, setList] = React.useState([
-        { _id: '69585254472894d25654', vendorName: 'John Doe', vendorPhone: '9856324587', vendorEmail: 'john@test.com', vendorCity: 'Mexico' },
-        { _id: 'b58525fr55f69d2894d2', vendorName: 'Sam Dure', vendorPhone: '9856324888', vendorEmail: 'sam@test.com', vendorCity: 'Berlin' },
+        { _id: '69585254472894d25654', vendorName: 'John Doe', billNumber: '254152FDSA522', hsnNumber: '524163', billDate: '14/10/2020', orderStatus: 'Pending' },
+        { _id: 'b58525fr55f69d2894d2', vendorName: 'Sam Torrent', billNumber: 'Sam Dure', hsnNumber: '9856324888', billDate: 'sam@test.com', orderStatus: 'Completed' },
     ]);
     const [filteredData, setFilteredData] = React.useState([]);
     const [searchInput, setSearchInput] = React.useState('');
@@ -39,11 +39,11 @@ export default function VendorList() {
 
     React.useEffect(() => {
         const filteredList = list.filter(item => {
+          const billNumber = item?.billNumber?.toLowerCase()?.includes(searchInput?.toLowerCase());
+          const hsnNumber = item?.hsnNumber?.toLowerCase()?.includes(searchInput?.toLowerCase());
+          const orderStatus = item?.orderStatus?.toLowerCase()?.includes(searchInput?.toLowerCase());
           const vendorName = item?.vendorName?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          const vendorPhone = item?.vendorPhone?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          const vendorEmail = item?.vendorEmail?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          const vendorCity = item?.vendorCity?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          return vendorName || vendorPhone || vendorEmail || vendorCity;
+          return billNumber || hsnNumber || orderStatus || vendorName;
         });
         setFilteredData(filteredList);
       }, [searchInput, list]);
@@ -55,14 +55,11 @@ export default function VendorList() {
         //     flex: 0.5,
         //     valueGetter: (params) => params.api.getRowIndex(params.id) + 1,
         // },
+        { field: 'billNumber', headerName: 'Bill Number', flex: 1 },
+        { field: 'hsnNumber', headerName: 'HSN Number', flex: 1 },
         { field: 'vendorName', headerName: 'Vendor Name', flex: 1 },
-        { field: 'vendorPhone', headerName: 'Vendor Phone', flex: 1 },
-        { field: 'vendorEmail', headerName: 'Vendor Email', flex: 1 },
-        { field: 'gstNumber', headerName: 'GST Number', flex: 1 },
-        { field: 'vendorCity', headerName: 'Vendor City', flex: 1 },
-        { field: 'vendorPincode', headerName: 'Vendor Pincode', flex: 1 },
-        { field: 'vendorState', headerName: 'Vendor State', flex: 1 },
-        { field: 'vendorAddress', headerName: 'Vendor Address', flex: 1 },
+        { field: 'billDate', headerName: 'Bill Date', flex: 1 },
+        { field: 'orderStatus', headerName: 'Status', flex: 1 },
         {
           field: 'action',
           headerName: 'Action',
@@ -74,7 +71,7 @@ export default function VendorList() {
                 <Tooltip title="Detail">
                     <Button type='button' className='bg-primary text-white py-0 me-1' onClick={()=>{
                         setTimeout(() => {
-                            navigate(`/admin/vendor-detail/${params.row._id}`)
+                            navigate(`/admin/orders-purchase-detail/${params.row._id}`)
                         }, 500);
                     }}>
                         <RemoveRedEyeIcon />
@@ -83,7 +80,7 @@ export default function VendorList() {
                 <Tooltip title="Edit">
                     <Button type='button' className='bg-primary text-white py-0' onClick={()=>{
                         setTimeout(() => {
-                            navigate(`/admin/vendor-edit/${params.row._id}`)
+                            navigate(`/admin/orders-purchase-edit/${params.row._id}`)
                         }, 500);
                     }}>
                         <EditIcon />
@@ -131,7 +128,7 @@ export default function VendorList() {
                                 variant="contained"
                                 onClick={()=>{
                                     setTimeout(() => {
-                                        navigate('/admin/vendor-add')
+                                        navigate('/admin/orders-purchase-add')
                                     }, 500);
                                 }}
                             >

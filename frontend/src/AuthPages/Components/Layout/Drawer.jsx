@@ -24,6 +24,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
+import { Tooltip } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -102,10 +103,10 @@ export default function DrawerIndex() {
         { menuItem: 'Dashboard', menuIcon: <DashboardIcon />, url:'/admin/dashboard' },
         { menuItem: 'Vendors', menuIcon: <AddBusinessIcon />, url:'/admin/vendors' },
         { menuItem: 'Customers', menuIcon: <PeopleAltIcon />, url:'/admin/customers' },
-        { menuItem: 'Items', menuIcon: <InventoryIcon />, url:'/admin/items' },
+        { menuItem: 'Items/Stock', menuIcon: <InventoryIcon />, url:'/admin/items' },
         { menuItem: 'Day Book', menuIcon: <AutoStoriesIcon />, url:'/admin/day-book' },
-        { menuItem: 'Order Purchase', menuIcon: <ShoppingBagIcon />, url:'/admin/order-purchase' },
-        { menuItem: 'Order Sales', menuIcon: <ShoppingCartIcon />, url:'/admin/order-sales' },
+        { menuItem: 'Order Purchase', menuIcon: <ShoppingBagIcon />, url:'/admin/orders-purchase' },
+        { menuItem: 'Order Sales', menuIcon: <ShoppingCartIcon />, url:'/admin/orders-sell' },
     ])
 
     const handleDrawerOpen = () => {
@@ -121,21 +122,36 @@ export default function DrawerIndex() {
             <CssBaseline />
             <AppBar position="fixed" open={open}>
                 <Toolbar>
-                    <IconButton
-                        color="black"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{
-                            marginRight: 5,
-                            ...(open && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" className='text-dark' noWrap component="div">
-                        <span className='text-primary fw-bold'>iMS</span>
-                    </Typography>
+                    <div className='d-flex align-items-center justify-content-between w-100'>
+                        <div className='d-flex align-items-center gap-1'>
+                            <IconButton
+                                color="black"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{
+                                    marginRight: 5,
+                                    ...(open && { display: 'none' }),
+                                }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" className='text-dark' noWrap component="div">
+                                <span className='text-primary fw-bold'>iMS</span>
+                            </Typography>
+                        </div>
+                        <div className="dropdown">
+                            <button className="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Ankur Shrivastava
+                            </button>
+                            <ul className="dropdown-menu">
+                                <li><a className="dropdown-item" href="#">My Profile</a></li>
+                                <li><a className="dropdown-item" href="#">Change Password</a></li>
+                                <li><a className="dropdown-item" href="#">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -162,7 +178,7 @@ export default function DrawerIndex() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {val?.menuIcon}
+                                    <Tooltip title={val?.menuItem}>{val?.menuIcon}</Tooltip>
                                 </ListItemIcon>
                                 <ListItemText primary={val?.menuItem} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
