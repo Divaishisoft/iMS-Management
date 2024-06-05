@@ -1,7 +1,8 @@
 const express = require("express");
 const dbConnect = require("../config/db");
 const authRouter = require("../Routes/user.Route");
-
+const VenderRouter = require("../Routes/Vender.Route")
+const CustomerRoutes = require("../Routes/Customer.Route")
 const cors = require("cors");
 
 const app = express();
@@ -23,8 +24,10 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("hello"));
+app.get("/", (req, res) => res.send("Hello My ISM User"));
 app.use("/user", authRouter);
+app.use('/vender',VenderRouter)
+app.use('/customer',CustomerRoutes)
 
 
 app.listen(8080, async () => {
