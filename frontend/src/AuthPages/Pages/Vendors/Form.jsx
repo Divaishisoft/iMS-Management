@@ -16,7 +16,7 @@ export default function VendorForm() {
         vendorName: '',
         vendorEmail: '',
         vendorPhone: '',
-        gstNumber: '',
+        vendorGstNumber: '',
         vendorCity: '',
         vendorPincode: '',
         vendorState: '',
@@ -146,11 +146,11 @@ export default function VendorForm() {
                                     </div>
                                     <div className="col-md-6">
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="gstNumber" className='w-280px mb-2'>GST Number <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorGstNumber" className='w-280px mb-2'>GST Number <span className='text-danger'>*</span></label>
                                             <TextField 
-                                                id="gstNumber"
-                                                name='gstNumber'
-                                                value={data?.gstNumber}  
+                                                id="vendorGstNumber"
+                                                name='vendorGstNumber'
+                                                value={data?.vendorGstNumber}  
                                                 size='small' 
                                                 className='w-280px mb-4' 
                                                 label="Enter GST Number" 

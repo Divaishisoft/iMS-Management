@@ -105,8 +105,8 @@ export default function DrawerIndex() {
         { menuItem: 'Customers', menuIcon: <PeopleAltIcon />, url:'/admin/customers' },
         { menuItem: 'Items/Stock', menuIcon: <InventoryIcon />, url:'/admin/items' },
         { menuItem: 'Day Book', menuIcon: <AutoStoriesIcon />, url:'/admin/day-book' },
-        { menuItem: 'Order Purchase', menuIcon: <ShoppingBagIcon />, url:'/admin/orders-purchase' },
-        { menuItem: 'Order Sales', menuIcon: <ShoppingCartIcon />, url:'/admin/orders-sell' },
+        { menuItem: 'Purchase Order', menuIcon: <ShoppingBagIcon />, url:'/admin/orders-purchase' },
+        { menuItem: 'Sales Order', menuIcon: <ShoppingCartIcon />, url:'/admin/orders-sales' },
     ])
 
     const handleDrawerOpen = () => {

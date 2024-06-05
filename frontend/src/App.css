@@ -124,8 +124,16 @@ body {
   transition: 1s;
 }
 
+.w-150px {
+  width: 150px !important;
+}
+
 .w-280px {
   width: 280px !important;
+}
+
+.fs-14px {
+  font-size: 14px;
 }
 
 .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar {

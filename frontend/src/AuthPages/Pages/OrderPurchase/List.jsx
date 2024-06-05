@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import DrawerHeaderComponent from '../../Components/Layout/DrawerHeaderComponent';
 import DrawerIndex from '../../Components/Layout/Drawer';
 import BreadcrumbsIndex from '../../Components/Breadcrumbs/Index';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
 import { Button, TextField, Tooltip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,7 +21,7 @@ export default function OrderPurchaseList() {
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
         ],
-        currentPage: 'Orders Purchase'
+        currentPage: 'Purchase Order '
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [list, setList] = React.useState([

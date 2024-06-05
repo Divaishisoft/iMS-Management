@@ -58,7 +58,7 @@ export default function VendorList() {
         { field: 'vendorName', headerName: 'Vendor Name', flex: 1 },
         { field: 'vendorPhone', headerName: 'Vendor Phone', flex: 1 },
         { field: 'vendorEmail', headerName: 'Vendor Email', flex: 1 },
-        { field: 'gstNumber', headerName: 'GST Number', flex: 1 },
+        { field: 'vendorGstNumber', headerName: 'GST Number', flex: 1 },
         { field: 'vendorCity', headerName: 'Vendor City', flex: 1 },
         { field: 'vendorPincode', headerName: 'Vendor Pincode', flex: 1 },
         { field: 'vendorState', headerName: 'Vendor State', flex: 1 },

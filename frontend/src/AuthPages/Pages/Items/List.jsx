@@ -25,8 +25,8 @@ export default function ItemList() {
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [list, setList] = React.useState([
-        { _id: '69585254472894d25654', itemName: 'Atta', itemUnit: 'kg', itemSubUnit: 'gm', itemUnitQuantity: '5', itemSubUnitQuantity: '300' },
-        { _id: 'b58525fr55f69d2894d2', itemName: 'Milk', itemUnit: 'lt', itemSubUnit: 'ml', itemUnitQuantity: '3', itemSubUnitQuantity: '500' },
+        { _id: '69585254472894d25654', hsnNumber: '254154', itemName: 'Atta', itemUnit: 'kg', itemSubUnit: 'gm', itemUnitQuantity: '5', itemSubUnitQuantity: '300' },
+        { _id: 'b58525fr55f69d2894d2', hsnNumber: '963258', itemName: 'Milk', itemUnit: 'lt', itemSubUnit: 'ml', itemUnitQuantity: '3', itemSubUnitQuantity: '500' },
     ]);
     const [filteredData, setFilteredData] = React.useState([]);
     const [searchInput, setSearchInput] = React.useState('');
@@ -52,6 +52,7 @@ export default function ItemList() {
         //     flex: 0.5,
         //     valueGetter: (params) => params.api.getRowIndex(params.id) + 1,
         // },
+        { field: 'hsnNumber', headerName: 'HSN Number', flex: 1 },
         { field: 'itemName', headerName: 'Item Name', flex: 1 },
         { field: 'itemUnitQuantity', headerName: 'Item Unit Quantity', flex: 1 },
         { field: 'itemUnit', headerName: 'Item Unit', flex: 1 },

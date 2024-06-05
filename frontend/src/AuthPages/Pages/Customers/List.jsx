@@ -58,7 +58,7 @@ export default function CustomerList() {
         { field: 'customerName', headerName: 'customer Name', flex: 1 },
         { field: 'customerPhone', headerName: 'customer Phone', flex: 1 },
         { field: 'customerEmail', headerName: 'customer Email', flex: 1 },
-        { field: 'gstNumber', headerName: 'GST Number', flex: 1 },
+        { field: 'customerGstNumber', headerName: 'GST Number', flex: 1 },
         { field: 'customerCity', headerName: 'customer City', flex: 1 },
         { field: 'customerPincode', headerName: 'customer Pincode', flex: 1 },
         { field: 'customerState', headerName: 'customer State', flex: 1 },

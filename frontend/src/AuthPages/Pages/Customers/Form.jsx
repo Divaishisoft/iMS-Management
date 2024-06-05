@@ -16,7 +16,7 @@ export default function CustomerForm() {
         customerName: '',
         customerEmail: '',
         customerPhone: '',
-        gstNumber: '',
+        customerGstNumber: '',
         customerCity: '',
         customerPincode: '',
         customerState: '',
@@ -146,17 +146,16 @@ export default function CustomerForm() {
                                     </div>
                                     <div className="col-md-6">
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="gstNumber" className='w-280px mb-2'>GST Number <span className='text-danger'>*</span></label>
+                                            <label htmlFor="customerGstNumber" className='w-280px mb-2'>GST Number</label>
                                             <TextField 
-                                                id="gstNumber"
-                                                name='gstNumber'
-                                                value={data?.gstNumber}  
+                                                id="customerGstNumber"
+                                                name='customerGstNumber'
+                                                value={data?.customerGstNumber}  
                                                 size='small' 
                                                 className='w-280px mb-4' 
                                                 label="Enter GST Number" 
                                                 variant="standard"
-                                                onChange={handleInput} 
-                                                required 
+                                                onChange={handleInput}
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>

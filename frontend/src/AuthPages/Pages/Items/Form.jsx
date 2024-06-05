@@ -14,6 +14,7 @@ export default function ItemForm() {
 
     const fields = {
         itemName: '',
+        hsnNumber: '',
         itemUnit: '',
         itemSubUnit: '',
         itemUnitQuantity: '0',
@@ -79,6 +80,20 @@ export default function ItemForm() {
                                                 size='small'
                                                 className='w-280px mb-4' 
                                                 label="Enter Item Name" 
+                                                variant="standard"
+                                                onChange={handleInput} 
+                                                required
+                                            />
+                                        </div>
+                                        <div className='d-flex flex-wrap align-items-center'>
+                                            <label htmlFor="hsnNumber" className='w-280px mb-2'>HSN Number <span className='text-danger'>*</span></label>
+                                            <TextField 
+                                                id="hsnNumber" 
+                                                name='hsnNumber'
+                                                value={data?.hsnNumber} 
+                                                size='small'
+                                                className='w-280px mb-4' 
+                                                label="Enter HSN Number" 
                                                 variant="standard"
                                                 onChange={handleInput} 
                                                 required

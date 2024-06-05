@@ -13,6 +13,7 @@ import ItemList from './AuthPages/Pages/Items/List'
 import ItemForm from './AuthPages/Pages/Items/Form'
 import OrderPurchaseList from './AuthPages/Pages/OrderPurchase/List'
 import OrderPurchaseForm from './AuthPages/Pages/OrderPurchase/Form'
+import OrderPurchaseDetail from './AuthPages/Pages/OrderPurchase/Detail'
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
         
         {/* Order Purchase */}
         <Route path="/admin/orders-purchase" element={<OrderPurchaseList />} />
+        <Route path="/admin/orders-purchase-detail/:id" element={<OrderPurchaseDetail />} />
         <Route path="/admin/orders-purchase-add" element={<OrderPurchaseForm />} />
         <Route path="/admin/orders-purchase-edit/:id" element={<OrderPurchaseForm />} />
       </Routes>
