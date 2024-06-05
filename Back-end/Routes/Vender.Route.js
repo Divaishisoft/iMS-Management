@@ -9,3 +9,4 @@ router.get("/getvender",VenderController.getAllVenders)
 router.delete("/deleteVender/:id", VenderController.DeleteVender);
 
 module.exports = router;
+
