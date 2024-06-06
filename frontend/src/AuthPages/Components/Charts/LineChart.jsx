@@ -19,8 +19,8 @@ const LineChartComponent = () => {
     return (
         <>
             <LineChart
-                width={500}
-                height={300}
+                width={700}
+                height={400}
                 series={[
                     { data: pData, label: 'pv' },
                     { data: uData, label: 'uv' },

@@ -10,8 +10,9 @@ import FullPageLoader from '../../Components/Loader/FullPageLoader';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-export default function OrderPurchaseForm() {
+export default function OrderSellForm() {
 
     const navigate = useNavigate();
 
@@ -29,23 +30,19 @@ export default function OrderPurchaseForm() {
     const [breadcrumbs, setBreadcrumbs] = React.useState({
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
-            { pageName: 'Purchase Order', url: '/admin/orders-purchase' },
+            { pageName: 'Sales Order', url: '/admin/orders-sales' },
         ],
-        currentPage: 'Add Purchase Order'
+        currentPage: 'Add Sales Order'
     });
     const [fullPageLoading, setFullPageLoading] = React.useState(true);
     const [data, setData] = React.useState(fields);
-    const [vendorData, setVendorData] = React.useState([
-        { _id: '69585254472894d25654', vendorName: 'John Doe', vendorPhone: '9856324587', vendorEmail: 'john@test.com', vendorCity: 'Mexico' },
-        { _id: 'b58525fr55f69d2894d2', vendorName: 'Sam Dure', vendorPhone: '9856324888', vendorEmail: 'sam@test.com', vendorCity: 'Berlin' },
+    const [customerData, setCustomerData] = React.useState([
+        { _id: '69585254472894d25654', customerName: 'John Doe', customerPhone: '9856324587', customerEmail: 'john@test.com', customerCity: 'Mexico' },
+        { _id: 'b58525fr55f69d2894d2', customerName: 'Sam Dure', customerPhone: '9856324888', customerEmail: 'sam@test.com', customerCity: 'Berlin' },
     ]);
     const [itemData, setItemData] = React.useState([
         { _id: '69585254472894d25654', hsnNumber: '254154', itemName: 'Atta', itemUnit: 'kg', itemSubUnit: 'gm', itemUnitQuantity: '5', itemSubUnitQuantity: '300' },
         { _id: 'b58525fr55f69d2894d2', hsnNumber: '963258', itemName: 'Milk', itemUnit: 'lt', itemSubUnit: 'ml', itemUnitQuantity: '3', itemSubUnitQuantity: '500' },
-    ]);
-    const [bankData, setBankData] = React.useState([
-        { _id: '69585254472894d25654', bankName: 'SBI', accountNumber: '5698547', accountHolderName: 'John Doe', ifscCode: 'UTHI0002569', bankBranch: 'India', availableBalance: '1500' },
-        { _id: '69585254472894d25d23', bankName: 'BOB', accountNumber: '5698569', accountHolderName: 'Sam Torrent', ifscCode: 'UTHI0002111', bankBranch: 'India', availableBalance: '2500' },
     ]);
 
     const handleInput = (e) => {
@@ -156,7 +153,22 @@ export default function OrderPurchaseForm() {
                         <div className='bg-white rounded px-3 py-2 custom-shadow-light'>
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
-                                    <div className='mb-2'><small>Fields with <span className='text-danger'>*</span> are required.</small></div>
+                                    <div className='d-flex align-items-center justify-content-between'>
+                                        <div className='mb-2'><small>Fields with <span className='text-danger'>*</span> are required.</small></div>
+                                        <Button 
+                                            type='button' 
+                                            size="small" 
+                                            className='bg-primary mb-3' 
+                                            variant="contained"
+                                            onClick={()=>{
+                                                setTimeout(() => {
+                                                    navigate('/admin/customer-add')
+                                                }, 500);
+                                            }}
+                                        >
+                                            <AddIcon /> ADD NEW CUSTOMER
+                                        </Button>
+                                    </div>
                                     <div className="col-md-3">
                                         <TextField 
                                             id="billNumber" 
@@ -186,19 +198,19 @@ export default function OrderPurchaseForm() {
                                     <div className="col-md-3">
                                         <Autocomplete
                                             id="vendorId"
-                                            options={vendorData}
-                                            getOptionLabel={(option) => option.vendorName}
-                                            value={vendorData.find((vendor) => vendor._id === data?.vendorId) || null}
+                                            options={customerData}
+                                            getOptionLabel={(option) => option.customerName}
+                                            value={customerData.find((customer) => customer._id === data?.customerId) || null}
                                             onChange={(event, value)=>{
                                                 setData({
                                                     ...data,
-                                                    vendorId: value ? value._id : ''
+                                                    customerId: value ? value._id : ''
                                                 })
                                             }}
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
-                                                    label="Vendor"
+                                                    label="Customer"
                                                     variant="standard"
                                                     size="small"
                                                     className="w-100 mb-4"
@@ -438,48 +450,7 @@ export default function OrderPurchaseForm() {
                                     {
                                         data?.items?.length > 0 &&
                                         <>
-                                            <div className="col-md-8"></div>
-                                            <div className="col-md-4">
-                                                <div className='border custom-shadow-light p-2 mb-4'>
-                                                    <FormControl variant="standard">
-                                                        <InputLabel id="paymentMode">Payment Mode</InputLabel>
-                                                        <Select
-                                                            labelId="paymentMode"
-                                                            id="paymentMode"
-                                                            name='paymentMode'
-                                                            size='small'
-                                                            value={data?.paymentMode}
-                                                            onChange={handleInput}
-                                                            label="Payment Mode"
-                                                        >
-                                                            <MenuItem value="Cash">Cash</MenuItem>
-                                                            <MenuItem value="Online">Online</MenuItem>
-                                                        </Select>
-                                                    </FormControl>
-                                                    {
-                                                        data?.paymentMode === 'Online' &&
-                                                        <FormControl variant="standard">
-                                                            <InputLabel id="depositedInBank">Select Bank</InputLabel>
-                                                            <Select
-                                                                labelId="depositedInBank"
-                                                                id="depositedInBank"
-                                                                name='depositedInBank'
-                                                                size='small'
-                                                                value={data?.depositedInBank}
-                                                                onChange={handleInput}
-                                                                label="Select Bank"
-                                                            >
-                                                                {
-                                                                    bankData?.map((val,key)=>(
-                                                                        <MenuItem key={key} value={val?._id}>{val?.bankName}</MenuItem>
-                                                                    ))
-                                                                }
-                                                            </Select>
-                                                        </FormControl>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div className="col-md-8"></div>
+                                            <div className="col-md-4"></div>
                                             <div className="col-md-4">
                                                 <div className='border custom-shadow-light p-2 mb-4'>
                                                     <div className='d-flex justify-content-between w-100'>
@@ -497,6 +468,7 @@ export default function OrderPurchaseForm() {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="col-md-4"></div>
                                             <div className='col-md-12'>
                                                 <div className='d-flex align-items-center justify-content-center gap-4'>
                                                     <Button 

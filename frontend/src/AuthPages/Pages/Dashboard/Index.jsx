@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import DrawerHeaderComponent from '../../Components/Layout/DrawerHeaderComponent';
 import DrawerIndex from '../../Components/Layout/Drawer';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import BreadcrumbsIndex from '../../Components/Breadcrumbs/Index';
@@ -14,6 +13,7 @@ import BarChartComponent from '../../Components/Charts/BarChart';
 import PieChartComponent from '../../Components/Charts/PieChart';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
 import LineChartComponent from '../../Components/Charts/LineChart';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 export default function DashboardIndex() {
 
@@ -22,7 +22,7 @@ export default function DashboardIndex() {
     })
     const [dashBoxes, setDashBoxes] = React.useState([
         { url: '/customers', icon: <PeopleAltIcon fontSize='large' />, menu: 'Customers' },
-        { url: '/vendors', icon: <AddBusinessIcon fontSize='large' />, menu: 'Vendors' },
+        { url: '/vendors', icon: <ManageAccountsIcon fontSize='large' />, menu: 'Vendors' },
         { url: '/items', icon: <InventoryIcon fontSize='large' />, menu: 'Items' },
         { url: '/day-book', icon: <AutoStoriesIcon fontSize='large' />, menu: 'Day Book' },
     ]) 
@@ -62,16 +62,34 @@ export default function DashboardIndex() {
                 </div>
                 <div className="row">
                     <div className="col-md-4">
-                        <BarChartComponent />
-                    </div>
-                    <div className="col-md-4">
-                        <br /><br />
-                        <PieChartComponent />
-                    </div>
-                    <div className="col-md-4">
                         <center>
-                            <LineChartComponent />
+                            <BarChartComponent />
                         </center>
+                    </div>
+                    <div className="col-md-8">
+                        <br /><br />
+                        <center>
+                            <PieChartComponent />
+                        </center>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-md-8">
+                        <LineChartComponent />
+                    </div>
+                    <div className="col-md-4">
+                        <div className='bg-white rounded px-3 py-2 custom-shadow-light fs-5'>
+                            <div className='d-flex align-items-center justify-content-between pt-3'>
+                                <div className='text-secondary'>Total Order Sales Pending</div>
+                                <div className='text-primary fw-bold'>10</div>
+                            </div>
+                            <hr />
+                            <div className='d-flex align-items-center justify-content-between pb-3'>
+                                <div className='text-secondary'>Total Order Purchase Pending</div>
+                                <div className='text-primary fw-bold'>5</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </Box>

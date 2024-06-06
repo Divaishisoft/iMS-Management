@@ -6,12 +6,13 @@ import DrawerIndex from '../../Components/Layout/Drawer';
 import BreadcrumbsIndex from '../../Components/Breadcrumbs/Index';
 import { Link, useNavigate } from 'react-router-dom';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
-import { Button, TextField, Tooltip } from '@mui/material';
+import { Button, IconButton, Menu, MenuItem, TextField, Tooltip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { DataGrid } from '@mui/x-data-grid';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function ItemList() {
 
@@ -43,7 +44,20 @@ export default function ItemList() {
           return itemName;
         });
         setFilteredData(filteredList);
-      }, [searchInput, list]);
+    }, [searchInput, list]);
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [selectedRowId, setSelectedRowId] = React.useState(null);
+    
+    const open = Boolean(anchorEl);
+    const handleTableMenuClick = (event, rowId) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedRowId(rowId);
+    };
+    const handleTableMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedRowId(null);
+    };
 
     const columns = [
         // {
@@ -66,24 +80,41 @@ export default function ItemList() {
           align: 'right',
           renderCell: (params) => (
             <>
-                <Tooltip title="Detail">
-                    <Button type='button' className='bg-primary text-white py-0 me-1' onClick={()=>{
+                <IconButton
+                    id={`basic-button-${params.row._id}`}
+                    aria-controls={open && selectedRowId === params.row._id ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open && selectedRowId === params.row._id ? 'true' : undefined}
+                    onClick={(event) => handleTableMenuClick(event, params.row._id)}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id={`basic-menu-${params.row._id}`}
+                    anchorEl={anchorEl}
+                    open={open && selectedRowId === params.row._id}
+                    onClose={handleTableMenuClose}
+                    MenuListProps={{
+                        'aria-labelledby': `basic-button-${params.row._id}`,
+                    }}
+                >
+                    <MenuItem onClick={() => {
+                        handleTableMenuClose();
                         setTimeout(() => {
-                            navigate(`/admin/item-detail/${params.row._id}`)
+                            navigate(`/admin/item-detail/${params.row._id}`);
                         }, 500);
                     }}>
-                        <RemoveRedEyeIcon />
-                    </Button>
-                </Tooltip>
-                <Tooltip title="Edit">
-                    <Button type='button' className='bg-primary text-white py-0' onClick={()=>{
+                        Detail
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                        handleTableMenuClose();
                         setTimeout(() => {
-                            navigate(`/admin/item-edit/${params.row._id}`)
+                            navigate(`/admin/item-edit/${params.row._id}`);
                         }, 500);
                     }}>
-                        <EditIcon />
-                    </Button>
-                </Tooltip>
+                        Edit
+                    </MenuItem>
+                </Menu>
             </>
           ),
         },

@@ -6,14 +6,14 @@ import DrawerIndex from '../../Components/Layout/Drawer';
 import BreadcrumbsIndex from '../../Components/Breadcrumbs/Index';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
 
-export default function OrderPurchaseDetail() {
+export default function OrderSellDetail() {
 
     const [breadcrumbs, setBreadcrumbs] = React.useState({
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
-            { pageName: 'Purchase Order', url: '/admin/orders-purchase' },
+            { pageName: 'Sales Order', url: '/admin/orders-sales' },
         ],
-        currentPage: 'Order Purchase Detail'
+        currentPage: 'Order Sales Detail'
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [data, setData] = React.useState(
@@ -81,7 +81,7 @@ export default function OrderPurchaseDetail() {
                                 </div>
                                 <div>
                                     <div className='d-flex align-items-center mb-2'>
-                                        <div className='w-150px fw-bold'>Vendor Detail</div>
+                                        <div className='w-150px fw-bold'>Vendor Detail:</div>
                                     </div>
                                     <div className='d-flex align-items-center'>
                                         <div className='w-150px'>Name</div>

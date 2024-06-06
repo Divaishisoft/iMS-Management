@@ -6,29 +6,27 @@ import DrawerIndex from '../../Components/Layout/Drawer';
 import BreadcrumbsIndex from '../../Components/Breadcrumbs/Index';
 import { Link, useNavigate } from 'react-router-dom';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
-import { Button, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
-export default function CustomerForm() {
+export default function BankForm() {
 
     const navigate = useNavigate()
 
     const fields = {
-        customerName: '',
-        customerEmail: '',
-        customerPhone: '',
-        customerGstNumber: '',
-        customerCity: '',
-        customerPincode: '',
-        customerState: '',
-        customerAddress: '',
+        bankName: '',
+        accountHolderName: '',
+        accountNumber: '',
+        availableBalance: '',
+        ifscCode: '',
+        bankBranch: '',
     }
 
     const [breadcrumbs, setBreadcrumbs] = React.useState({
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
-            { pageName: 'Customers', url: '/admin/customers' },
+            { pageName: 'Items', url: '/admin/banks' },
         ],
-        currentPage: 'Add Customer'
+        currentPage: 'Add Bank'
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [data, setData] = React.useState(fields)
@@ -74,122 +72,93 @@ export default function CustomerForm() {
                                     <div className='mb-3'><small>Fields with <span className='text-danger'>*</span> are required.</small></div>
                                     <div className="col-md-6">
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerName" className='w-280px mb-2 text-secondary'>Customer Name <span className='text-danger'>*</span></label>
+                                            <label htmlFor="bankName" className='w-280px mb-2 text-secondary'>Bank Name <span className='text-danger'>*</span></label>
                                             <TextField 
-                                                id="customerName" 
-                                                name='customerName'
-                                                value={data?.customerName} 
+                                                id="bankName" 
+                                                name='bankName'
+                                                value={data?.bankName} 
                                                 size='small'
                                                 className='w-280px mb-4' 
-                                                label="Enter Customer Name" 
+                                                label="Enter Bank Name" 
                                                 variant="standard"
                                                 onChange={handleInput} 
                                                 required
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerEmail" className='w-280px mb-2 text-secondary'>Customer Email <span className='text-danger'>*</span></label>
+                                            <label htmlFor="accountHolderName" className='w-280px mb-2 text-secondary'>Account Holder Name <span className='text-danger'>*</span></label>
                                             <TextField 
-                                                id="customerEmail"
-                                                name='customerEmail'
-                                                value={data?.customerEmail}  
-                                                size='small' 
-                                                className='w-280px mb-4' 
-                                                label="Enter Customer Email" 
-                                                variant="standard"
-                                                onChange={handleInput} 
-                                                required 
-                                            />
-                                        </div>
-                                        <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerPhone" className='w-280px mb-2 text-secondary'>Customer Phone <span className='text-danger'>*</span></label>
-                                            <TextField 
-                                                id="customerPhone"
-                                                name='customerPhone'
-                                                value={data?.customerPhone}  
-                                                size='small' 
-                                                className='w-280px mb-4' 
-                                                label="Enter Customer Phone" 
-                                                variant="standard"
-                                                onChange={handleInput} 
-                                                required 
-                                            />
-                                        </div>
-                                        <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerCity" className='w-280px mb-2 text-secondary'>Customer City <span className='text-danger'>*</span></label>
-                                            <TextField 
-                                                id="customerCity" 
-                                                name='customerCity'
-                                                value={data?.customerCity} 
+                                                id="accountHolderName" 
+                                                name='accountHolderName'
+                                                value={data?.accountHolderName} 
                                                 size='small'
                                                 className='w-280px mb-4' 
-                                                label="Enter Customer City" 
+                                                label="Enter Account Holder Name" 
                                                 variant="standard"
                                                 onChange={handleInput} 
                                                 required
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerPincode" className='w-280px mb-2 text-secondary'>Customer Pincode <span className='text-danger'>*</span></label>
+                                            <label htmlFor="accountNumber" className='w-280px mb-2 text-secondary'>Account Number <span className='text-danger'>*</span></label>
                                             <TextField 
-                                                id="customerPincode"
-                                                name='customerPincode'
-                                                value={data?.customerPincode}  
-                                                size='small' 
+                                                type='text'
+                                                id="accountNumber" 
+                                                name='accountNumber'
+                                                value={data?.accountNumber} 
+                                                size='small'
                                                 className='w-280px mb-4' 
-                                                label="Enter Customer Pincode" 
-                                                variant="standard"
-                                                onChange={handleInput} 
-                                                required 
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerGstNumber" className='w-280px mb-2 text-secondary'>GST Number</label>
-                                            <TextField 
-                                                id="customerGstNumber"
-                                                name='customerGstNumber'
-                                                value={data?.customerGstNumber}  
-                                                size='small' 
-                                                className='w-280px mb-4' 
-                                                label="Enter GST Number" 
-                                                variant="standard"
-                                                onChange={handleInput}
-                                            />
-                                        </div>
-                                        <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerState" className='w-280px mb-2 text-secondary'>Customer State <span className='text-danger'>*</span></label>
-                                            <TextField 
-                                                id="customerState"
-                                                name='customerState'
-                                                value={data?.customerState}  
-                                                size='small' 
-                                                className='w-280px mb-4' 
-                                                label="Enter Customer State" 
-                                                variant="standard"
-                                                onChange={handleInput} 
-                                                required 
-                                            />
-                                        </div>
-                                        <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="customerAddress" className='w-280px mb-2 text-secondary'>Customer Address <span className='text-danger'>*</span></label>
-                                            <TextField
-                                                id="customerAddress"
-                                                name='customerAddress'
-                                                value={data?.customerAddress} 
-                                                className='w-280px mb-4' 
-                                                label="Enter Customer Address"
-                                                multiline
-                                                rows={4}
-                                                defaultValue={data?.customerAddress} 
+                                                label="Enter Account Number" 
                                                 variant="standard"
                                                 onChange={handleInput} 
                                                 required
                                             />
                                         </div>
-                                    </div>
-                                    <div className='col-md-12'>
+                                        <div className='d-flex flex-wrap align-items-center'>
+                                            <label htmlFor="availableBalance" className='w-280px mb-2 text-secondary'>Available Balance <span className='text-danger'>*</span></label>
+                                            <TextField 
+                                                type='text'
+                                                id="availableBalance" 
+                                                name='availableBalance'
+                                                value={data?.availableBalance} 
+                                                size='small'
+                                                className='w-280px mb-4' 
+                                                label="Enter Available Balance" 
+                                                variant="standard"
+                                                onChange={handleInput} 
+                                                required
+                                            />
+                                        </div>
+                                        <div className='d-flex flex-wrap align-items-center'>
+                                            <label htmlFor="ifscCode" className='w-280px mb-2 text-secondary'>IFSC Code <span className='text-danger'>*</span></label>
+                                            <TextField 
+                                                type='text'
+                                                id="ifscCode" 
+                                                name='ifscCode'
+                                                value={data?.ifscCode} 
+                                                size='small'
+                                                className='w-280px mb-4' 
+                                                label="Enter IFSC Code" 
+                                                variant="standard"
+                                                onChange={handleInput} 
+                                                required
+                                            />
+                                        </div>
+                                        <div className='d-flex flex-wrap align-items-center'>
+                                            <label htmlFor="bankBranch" className='w-280px mb-2 text-secondary'>Bank Branch <span className='text-danger'>*</span></label>
+                                            <TextField 
+                                                type='text'
+                                                id="bankBranch" 
+                                                name='bankBranch'
+                                                value={data?.bankBranch} 
+                                                size='small'
+                                                className='w-280px mb-4' 
+                                                label="Enter Bank Branch" 
+                                                variant="standard"
+                                                onChange={handleInput} 
+                                                required
+                                            />
+                                        </div>
                                         <div className='d-flex align-items-center justify-content-center gap-4'>
                                             <Button 
                                                 variant="outlined" 
@@ -213,6 +182,7 @@ export default function CustomerForm() {
                                             </Button>
                                         </div>
                                     </div>
+                                    <div className="col-md-6"></div>
                                 </div>
                             </form>
                         </div>

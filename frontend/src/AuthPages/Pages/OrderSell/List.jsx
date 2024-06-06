@@ -14,7 +14,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { DataGrid } from '@mui/x-data-grid';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-export default function OrderPurchaseList() {
+export default function OrderSellList() {
 
     const navigate = useNavigate()
 
@@ -22,12 +22,12 @@ export default function OrderPurchaseList() {
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
         ],
-        currentPage: 'Purchase Order '
+        currentPage: 'Sales Order '
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [list, setList] = React.useState([
-        { _id: '69585254472894d25654', vendorName: 'John Doe', billNumber: '254152FDSA522', hsnNumber: '524163', billDate: '14/10/2020', orderStatus: 'Pending' },
-        { _id: 'b58525fr55f69d2894d2', vendorName: 'Sam Torrent', billNumber: 'Sam Dure', hsnNumber: '9856324888', billDate: 'sam@test.com', orderStatus: 'Completed' },
+        { _id: '69585254472894d25654', customerName: 'John Doe', billNumber: '254152FDSA522', hsnNumber: '524163', billDate: '14/10/2020', orderStatus: 'Pending' },
+        { _id: 'b58525fr55f69d2894d2', customerName: 'Sam Torrent', billNumber: 'Sam Dure', hsnNumber: '9856324888', billDate: 'sam@test.com', orderStatus: 'Completed' },
     ]);
     const [filteredData, setFilteredData] = React.useState([]);
     const [searchInput, setSearchInput] = React.useState('');
@@ -72,7 +72,7 @@ export default function OrderPurchaseList() {
         // },
         { field: 'billNumber', headerName: 'Bill Number', flex: 1 },
         { field: 'hsnNumber', headerName: 'HSN Number', flex: 1 },
-        { field: 'vendorName', headerName: 'Vendor Name', flex: 1 },
+        { field: 'customerName', headerName: 'Customer Name', flex: 1 },
         { field: 'billDate', headerName: 'Bill Date', flex: 1 },
         { field: 'orderStatus', headerName: 'Status', flex: 1 },
         {
@@ -104,7 +104,7 @@ export default function OrderPurchaseList() {
                     <MenuItem onClick={() => {
                         handleTableMenuClose();
                         setTimeout(() => {
-                            navigate(`/admin/orders-purchase-detail/${params.row._id}`);
+                            navigate(`/admin/orders-sales-detail/${params.row._id}`);
                         }, 500);
                     }}>
                         Detail
@@ -112,7 +112,7 @@ export default function OrderPurchaseList() {
                     <MenuItem onClick={() => {
                         handleTableMenuClose();
                         setTimeout(() => {
-                            navigate(`/admin/orders-purchase-edit/${params.row._id}`);
+                            navigate(`/admin/orders-sales-edit/${params.row._id}`);
                         }, 500);
                     }}>
                         Edit
@@ -160,7 +160,7 @@ export default function OrderPurchaseList() {
                                 variant="contained"
                                 onClick={()=>{
                                     setTimeout(() => {
-                                        navigate('/admin/orders-purchase-add')
+                                        navigate('/admin/orders-sales-add')
                                     }, 500);
                                 }}
                             >

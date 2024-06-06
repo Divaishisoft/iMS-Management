@@ -6,15 +6,13 @@ import DrawerIndex from '../../Components/Layout/Drawer';
 import BreadcrumbsIndex from '../../Components/Breadcrumbs/Index';
 import { useNavigate } from 'react-router-dom';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
-import { Button, IconButton, Menu, MenuItem, TextField, Tooltip } from '@mui/material';
+import { Button, IconButton, Menu, MenuItem, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { DataGrid } from '@mui/x-data-grid';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-export default function OrderPurchaseList() {
+export default function BankList() {
 
     const navigate = useNavigate()
 
@@ -22,12 +20,12 @@ export default function OrderPurchaseList() {
         previousPages: [
             { pageName: 'Dashboard', url: '/admin/dashboard' },
         ],
-        currentPage: 'Purchase Order '
+        currentPage: 'Banks'
     })
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
     const [list, setList] = React.useState([
-        { _id: '69585254472894d25654', vendorName: 'John Doe', billNumber: '254152FDSA522', hsnNumber: '524163', billDate: '14/10/2020', orderStatus: 'Pending' },
-        { _id: 'b58525fr55f69d2894d2', vendorName: 'Sam Torrent', billNumber: 'Sam Dure', hsnNumber: '9856324888', billDate: 'sam@test.com', orderStatus: 'Completed' },
+        { _id: '69585254472894d25654', bankName: 'SBI', accountNumber: '5698547', accountHolderName: 'John Doe', ifscCode: 'UTHI0002569', bankBranch: 'India', availableBalance: '1500' },
+        { _id: '69585254472894d25d23', bankName: 'BOB', accountNumber: '5698569', accountHolderName: 'Sam Torrent', ifscCode: 'UTHI0002111', bankBranch: 'India', availableBalance: '2500' },
     ]);
     const [filteredData, setFilteredData] = React.useState([]);
     const [searchInput, setSearchInput] = React.useState('');
@@ -40,27 +38,24 @@ export default function OrderPurchaseList() {
 
     React.useEffect(() => {
         const filteredList = list.filter(item => {
-          const billNumber = item?.billNumber?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          const hsnNumber = item?.hsnNumber?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          const orderStatus = item?.orderStatus?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          const vendorName = item?.vendorName?.toLowerCase()?.includes(searchInput?.toLowerCase());
-          return billNumber || hsnNumber || orderStatus || vendorName;
+          const bankName = item?.bankName?.toLowerCase()?.includes(searchInput?.toLowerCase());
+          const accountHolderName = item?.accountHolderName?.toLowerCase()?.includes(searchInput?.toLowerCase());
+          return bankName || accountHolderName;
         });
         setFilteredData(filteredList);
     }, [searchInput, list]);
-
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [selectedRowId, setSelectedRowId] = React.useState(null);
     
     const open = Boolean(anchorEl);
     const handleTableMenuClick = (event, rowId) => {
-      setAnchorEl(event.currentTarget);
-      setSelectedRowId(rowId);
+    setAnchorEl(event.currentTarget);
+    setSelectedRowId(rowId);
     };
     const handleTableMenuClose = () => {
-      setAnchorEl(null);
-      setSelectedRowId(null);
+    setAnchorEl(null);
+    setSelectedRowId(null);
     };
 
     const columns = [
@@ -70,16 +65,17 @@ export default function OrderPurchaseList() {
         //     flex: 0.5,
         //     valueGetter: (params) => params.api.getRowIndex(params.id) + 1,
         // },
-        { field: 'billNumber', headerName: 'Bill Number', flex: 1 },
-        { field: 'hsnNumber', headerName: 'HSN Number', flex: 1 },
-        { field: 'vendorName', headerName: 'Vendor Name', flex: 1 },
-        { field: 'billDate', headerName: 'Bill Date', flex: 1 },
-        { field: 'orderStatus', headerName: 'Status', flex: 1 },
+        { field: 'bankName', headerName: 'Bank Name', flex: 1 },
+        { field: 'accountHolderName', headerName: 'Account Holder Name', flex: 1 },
+        { field: 'accountNumber', headerName: 'Account Number', flex: 1 },
+        { field: 'availableBalance', headerName: 'Available Balance', flex: 1, valueFormatter: (params) => {return `${params}/-`} },
+        { field: 'ifscCode', headerName: 'IFSC Code', flex: 1 },
+        { field: 'bankBranch', headerName: 'Bank Branch', flex: 1 },
         {
           field: 'action',
           headerName: 'Action',
           flex: 1,
-          headerAlign: 'right',
+          headerAlign: 'right', 
           align: 'right',
           renderCell: (params) => (
             <>
@@ -104,15 +100,7 @@ export default function OrderPurchaseList() {
                     <MenuItem onClick={() => {
                         handleTableMenuClose();
                         setTimeout(() => {
-                            navigate(`/admin/orders-purchase-detail/${params.row._id}`);
-                        }, 500);
-                    }}>
-                        Detail
-                    </MenuItem>
-                    <MenuItem onClick={() => {
-                        handleTableMenuClose();
-                        setTimeout(() => {
-                            navigate(`/admin/orders-purchase-edit/${params.row._id}`);
+                            navigate(`/admin/bank-edit/${params.row._id}`);
                         }, 500);
                     }}>
                         Edit
@@ -160,7 +148,7 @@ export default function OrderPurchaseList() {
                                 variant="contained"
                                 onClick={()=>{
                                     setTimeout(() => {
-                                        navigate('/admin/orders-purchase-add')
+                                        navigate('/admin/bank-add')
                                     }, 500);
                                 }}
                             >

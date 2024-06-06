@@ -18,11 +18,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PaidIcon from '@mui/icons-material/Paid';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 
@@ -101,11 +102,12 @@ export default function DrawerIndex() {
     const [open, setOpen] = React.useState(false);
     const [menu, setMenu] = React.useState([
         { menuItem: 'Dashboard', menuIcon: <DashboardIcon />, url:'/admin/dashboard' },
-        { menuItem: 'Vendors', menuIcon: <AddBusinessIcon />, url:'/admin/vendors' },
+        { menuItem: 'Banks', menuIcon: <PaidIcon />, url:'/admin/banks' },
+        { menuItem: 'Vendors', menuIcon: <ManageAccountsIcon />, url:'/admin/vendors' },
         { menuItem: 'Customers', menuIcon: <PeopleAltIcon />, url:'/admin/customers' },
         { menuItem: 'Items/Stock', menuIcon: <InventoryIcon />, url:'/admin/items' },
         { menuItem: 'Day Book', menuIcon: <AutoStoriesIcon />, url:'/admin/day-book' },
-        { menuItem: 'Purchase Order', menuIcon: <ShoppingBagIcon />, url:'/admin/orders-purchase' },
+        { menuItem: 'Purchase Order', menuIcon: <AddBusinessIcon />, url:'/admin/orders-purchase' },
         { menuItem: 'Sales Order', menuIcon: <ShoppingCartIcon />, url:'/admin/orders-sales' },
     ])
 

@@ -132,6 +132,19 @@ body {
   width: 280px !important;
 }
 
+.form-select {
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #000 !important;
+}
+
+.form-select:focus {
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #0092c0 !important;
+  box-shadow: none !important;
+}
+
 .fs-14px {
   font-size: 14px;
 }
@@ -146,9 +159,34 @@ body {
   background-color: #0092c021 !important;
 }
 
+.css-1nrlq1o-MuiFormControl-root {
+  width: 100% !important;
+}
+
 #root {
   width: 100% !important;
   overflow-x: auto !important;
+}
+/* width */
+#root::-webkit-scrollbar {
+  width: 10px !important;
+  height: 5px;
+  border-radius: 100px;
+}
+
+/* Track */
+#root::-webkit-scrollbar-track {
+  background: #f1f1f1 !important; 
+}
+ 
+/* Handle */
+#root::-webkit-scrollbar-thumb {
+  background: #006483 !important; 
+}
+
+/* Handle on hover */
+#root::-webkit-scrollbar-thumb:hover {
+  background: #047193 !important; 
 }
 
 @keyframes rotate {

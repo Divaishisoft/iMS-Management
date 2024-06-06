@@ -14,6 +14,11 @@ import ItemForm from './AuthPages/Pages/Items/Form'
 import OrderPurchaseList from './AuthPages/Pages/OrderPurchase/List'
 import OrderPurchaseForm from './AuthPages/Pages/OrderPurchase/Form'
 import OrderPurchaseDetail from './AuthPages/Pages/OrderPurchase/Detail'
+import OrderSellList from './AuthPages/Pages/OrderSell/List'
+import OrderSellDetail from './AuthPages/Pages/OrderSell/Detail'
+import OrderSellForm from './AuthPages/Pages/OrderSell/Form'
+import BankList from './AuthPages/Pages/Bank/List'
+import BankForm from './AuthPages/Pages/Bank/Form'
 
 function App() {
   return (
@@ -29,6 +34,11 @@ function App() {
 
         {/* Dashboard */}
         <Route path="/admin/dashboard" element={<DashboardIndex />} />
+        
+        {/* Bank */}
+        <Route path="/admin/banks" element={<BankList />} />
+        <Route path="/admin/bank-add" element={<BankForm />} />
+        <Route path="/admin/bank-edit/:id" element={<BankForm />} />
         
         {/* Vendor */}
         <Route path="/admin/vendors" element={<VendorList />} />
@@ -50,6 +60,12 @@ function App() {
         <Route path="/admin/orders-purchase-detail/:id" element={<OrderPurchaseDetail />} />
         <Route path="/admin/orders-purchase-add" element={<OrderPurchaseForm />} />
         <Route path="/admin/orders-purchase-edit/:id" element={<OrderPurchaseForm />} />
+        
+        {/* Order Purchase */}
+        <Route path="/admin/orders-sales" element={<OrderSellList />} />
+        <Route path="/admin/orders-sales-detail/:id" element={<OrderSellDetail />} />
+        <Route path="/admin/orders-sales-add" element={<OrderSellForm />} />
+        <Route path="/admin/orders-sales-edit/:id" element={<OrderSellForm />} />
       </Routes>
       
     </>

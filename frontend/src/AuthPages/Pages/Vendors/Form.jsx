@@ -74,7 +74,7 @@ export default function VendorForm() {
                                     <div className='mb-3'><small>Fields with <span className='text-danger'>*</span> are required.</small></div>
                                     <div className="col-md-6">
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorName" className='w-280px mb-2'>Vendor Name <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorName" className='w-280px mb-2 text-secondary'>Vendor Name <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorName" 
                                                 name='vendorName'
@@ -88,7 +88,7 @@ export default function VendorForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorEmail" className='w-280px mb-2'>Vendor Email <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorEmail" className='w-280px mb-2 text-secondary'>Vendor Email <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorEmail"
                                                 name='vendorEmail'
@@ -102,7 +102,7 @@ export default function VendorForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorPhone" className='w-280px mb-2'>Vendor Phone <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorPhone" className='w-280px mb-2 text-secondary'>Vendor Phone <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorPhone"
                                                 name='vendorPhone'
@@ -116,7 +116,7 @@ export default function VendorForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorCity" className='w-280px mb-2'>Vendor City <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorCity" className='w-280px mb-2 text-secondary'>Vendor City <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorCity" 
                                                 name='vendorCity'
@@ -130,7 +130,7 @@ export default function VendorForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorPincode" className='w-280px mb-2'>Vendor Pincode <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorPincode" className='w-280px mb-2 text-secondary'>Vendor Pincode <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorPincode"
                                                 name='vendorPincode'
@@ -146,7 +146,7 @@ export default function VendorForm() {
                                     </div>
                                     <div className="col-md-6">
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorGstNumber" className='w-280px mb-2'>GST Number <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorGstNumber" className='w-280px mb-2 text-secondary'>GST Number <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorGstNumber"
                                                 name='vendorGstNumber'
@@ -160,7 +160,7 @@ export default function VendorForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorState" className='w-280px mb-2'>Vendor State <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorState" className='w-280px mb-2 text-secondary'>Vendor State <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="vendorState"
                                                 name='vendorState'
@@ -174,7 +174,7 @@ export default function VendorForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="vendorAddress" className='w-280px mb-2'>Vendor Address <span className='text-danger'>*</span></label>
+                                            <label htmlFor="vendorAddress" className='w-280px mb-2 text-secondary'>Vendor Address <span className='text-danger'>*</span></label>
                                             <TextField
                                                 id="vendorAddress"
                                                 name='vendorAddress'

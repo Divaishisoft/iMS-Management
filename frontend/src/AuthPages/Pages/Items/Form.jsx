@@ -72,7 +72,7 @@ export default function ItemForm() {
                                     <div className='mb-3'><small>Fields with <span className='text-danger'>*</span> are required.</small></div>
                                     <div className="col-md-6">
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="itemName" className='w-280px mb-2'>Item Name <span className='text-danger'>*</span></label>
+                                            <label htmlFor="itemName" className='w-280px mb-2 text-secondary'>Item Name <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="itemName" 
                                                 name='itemName'
@@ -86,7 +86,7 @@ export default function ItemForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="hsnNumber" className='w-280px mb-2'>HSN Number <span className='text-danger'>*</span></label>
+                                            <label htmlFor="hsnNumber" className='w-280px mb-2 text-secondary'>HSN Number <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 id="hsnNumber" 
                                                 name='hsnNumber'
@@ -101,63 +101,66 @@ export default function ItemForm() {
                                         </div>
                                         {/* Unit */}
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="itemUnit" className='w-280px mb-2'>Item Unit <span className='text-danger'>*</span></label>
-                                            <FormControl variant="standard">
-                                                <InputLabel id="demo-simple-select-standard-label">Unit</InputLabel>
-                                                <Select
-                                                    labelId="demo-simple-select-standard-label"
-                                                    id="itemUnit"
-                                                    label="Unit"
-                                                    name='itemUnit'
-                                                    value={data?.itemUnit}
-                                                    className='w-280px mb-4'
-                                                    size='small'
-                                                    variant="standard"
-                                                    // onChange={handleInput}
-                                                    onChange={(e)=>{
-                                                        const { value } = e.target
-                                                        setData({
-                                                            ...data,
-                                                            itemUnit: value,
-                                                            itemSubUnit: value == 'kg' ? 'gm' : value == 'lt' ? 'ml' : value == 'm' ? 'cm' : value == 'ft' ? 'in' : ''
-                                                        })
-                                                    }}
-                                                    required
-                                                >
-                                                    <MenuItem value='kg'>Kilogram</MenuItem>
-                                                    <MenuItem value='lt'>Litre</MenuItem>
-                                                    <MenuItem value='m'>Meter</MenuItem>
-                                                    <MenuItem value='ft'>Feet</MenuItem>
-                                                    <MenuItem value='pcs'>Pieces</MenuItem>
-                                                </Select>
-                                            </FormControl>
-                                        </div>
-                                        {/* Sub Unit */}
-                                        <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="itemSubUnit" className='w-280px mb-2'>Item Sub Unit <span className='text-danger'>*</span></label>
-                                            <FormControl variant="standard">
-                                                <InputLabel id="demo-simple-select-standard-label">Sub Unit</InputLabel>
-                                                <Select
-                                                    labelId="demo-simple-select-standard-label"
-                                                    id="itemSubUnit"
-                                                    label="Sub Unit"
-                                                    name='itemSubUnit'
-                                                    value={data?.itemSubUnit}
-                                                    className='w-280px mb-4'
-                                                    size='small'
-                                                    variant="standard"
-                                                    // onChange={handleInput}
-                                                    readOnly
-                                                >
-                                                    <MenuItem value='gm'>Gram</MenuItem>
-                                                    <MenuItem value='ml'>Milli Litre</MenuItem>
-                                                    <MenuItem value='cm'>Centimeter</MenuItem>
-                                                    <MenuItem value='in'>Inche</MenuItem>
-                                                </Select>
-                                            </FormControl>
+                                            <label htmlFor="itemUnit" className='w-280px mb-2 text-secondary'>Item Unit <span className='text-danger'>*</span></label>
+                                            <div className='w-280px'>
+                                                <FormControl variant="standard">
+                                                    <InputLabel id="demo-simple-select-standard-label">Unit</InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-standard-label"
+                                                        id="itemUnit"
+                                                        label="Unit"
+                                                        name='itemUnit'
+                                                        value={data?.itemUnit}
+                                                        className='mb-4'
+                                                        size='small'
+                                                        variant="standard"
+                                                        // onChange={handleInput}
+                                                        onChange={(e)=>{
+                                                            const { value } = e.target
+                                                            setData({
+                                                                ...data,
+                                                                itemUnit: value,
+                                                                itemSubUnit: value == 'kg' ? 'gm' : value == 'lt' ? 'ml' : value == 'm' ? 'cm' : value == 'ft' ? 'in' : ''
+                                                            })
+                                                        }}
+                                                        required
+                                                    >
+                                                        <MenuItem value='kg'>Kilogram</MenuItem>
+                                                        <MenuItem value='lt'>Litre</MenuItem>
+                                                        <MenuItem value='m'>Meter</MenuItem>
+                                                        <MenuItem value='ft'>Feet</MenuItem>
+                                                        <MenuItem value='pcs'>Pieces</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="itemUnitQuantity" className='w-280px mb-2'>Item Unit Quantity <span className='text-danger'>*</span></label>
+                                            <label htmlFor="itemSubUnit" className='w-280px mb-2 text-secondary'>Item Sub Unit <span className='text-danger'>*</span></label>
+                                            <div className='w-280px'>
+                                                <FormControl variant="standard">
+                                                    <InputLabel id="demo-simple-select-standard-label">Sub Unit</InputLabel>
+                                                    <Select
+                                                        labelId="demo-simple-select-standard-label"
+                                                        id="itemSubUnit"
+                                                        label="Sub Unit"
+                                                        name='itemSubUnit'
+                                                        value={data?.itemSubUnit}
+                                                        className='mb-4'
+                                                        size='small'
+                                                        variant="standard"
+                                                        // onChange={handleInput}
+                                                        readOnly
+                                                    >
+                                                        <MenuItem value='gm'>Gram</MenuItem>
+                                                        <MenuItem value='ml'>Milli Litre</MenuItem>
+                                                        <MenuItem value='cm'>Centimeter</MenuItem>
+                                                        <MenuItem value='in'>Inche</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                        </div>
+                                        <div className='d-flex flex-wrap align-items-center'>
+                                            <label htmlFor="itemUnitQuantity" className='w-280px mb-2 text-secondary'>Item Unit Quantity <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 type='number'
                                                 id="itemUnitQuantity" 
@@ -172,7 +175,7 @@ export default function ItemForm() {
                                             />
                                         </div>
                                         <div className='d-flex flex-wrap align-items-center'>
-                                            <label htmlFor="itemSubUnitQuantity" className='w-280px mb-2'>Item Sub Unit Quantity <span className='text-danger'>*</span></label>
+                                            <label htmlFor="itemSubUnitQuantity" className='w-280px mb-2 text-secondary'>Item Sub Unit Quantity <span className='text-danger'>*</span></label>
                                             <TextField 
                                                 type='number'
                                                 id="itemSubUnitQuantity" 
