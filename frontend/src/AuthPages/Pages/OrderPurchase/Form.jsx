@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
@@ -9,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Autocomplete, Button, FormControl, Icon, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip } from '@mui/material';
 
 export default function OrderPurchaseForm() {
 
@@ -36,16 +39,17 @@ export default function OrderPurchaseForm() {
     const [fullPageLoading, setFullPageLoading] = React.useState(true);
     const [data, setData] = React.useState(fields);
     const [vendorData, setVendorData] = React.useState([
-        { _id: '69585254472894d25654', vendorName: 'John Doe', vendorPhone: '9856324587', vendorEmail: 'john@test.com', vendorCity: 'Mexico' },
-        { _id: 'b58525fr55f69d2894d2', vendorName: 'Sam Dure', vendorPhone: '9856324888', vendorEmail: 'sam@test.com', vendorCity: 'Berlin' },
+        { _id: '69585254472894d25650', vendorName: 'John Doe', vendorPhone: '9856324587', vendorEmail: 'john@test.com', vendorCity: 'Mexico' },
+        { _id: 'b58525fr55f69d2894d1', vendorName: 'Sam Dure', vendorPhone: '9856324888', vendorEmail: 'sam@test.com', vendorCity: 'Berlin' },
     ]);
     const [itemData, setItemData] = React.useState([
         { _id: '69585254472894d25654', hsnNumber: '254154', itemName: 'Atta', itemUnit: 'kg', itemSubUnit: 'gm', itemUnitQuantity: '5', itemSubUnitQuantity: '300' },
         { _id: 'b58525fr55f69d2894d2', hsnNumber: '963258', itemName: 'Milk', itemUnit: 'lt', itemSubUnit: 'ml', itemUnitQuantity: '3', itemSubUnitQuantity: '500' },
+        { _id: 'b58525fr55f69d2894j8', hsnNumber: '963298', itemName: 'Tshirt', itemUnit: 'pcs', itemSubUnit: '', itemUnitQuantity: '5', itemSubUnitQuantity: '' },
     ]);
     const [bankData, setBankData] = React.useState([
-        { _id: '69585254472894d25654', bankName: 'SBI', accountNumber: '5698547', accountHolderName: 'John Doe', ifscCode: 'UTHI0002569', bankBranch: 'India', availableBalance: '1500' },
-        { _id: '69585254472894d25d23', bankName: 'BOB', accountNumber: '5698569', accountHolderName: 'Sam Torrent', ifscCode: 'UTHI0002111', bankBranch: 'India', availableBalance: '2500' },
+        { _id: '69585254472894d25655', bankName: 'SBI', accountNumber: '5698547', accountHolderName: 'John Doe', ifscCode: 'UTHI0002569', bankBranch: 'India', availableBalance: '1500' },
+        { _id: '69585254472894d25d12', bankName: 'BOB', accountNumber: '5698569', accountHolderName: 'Sam Torrent', ifscCode: 'UTHI0002111', bankBranch: 'India', availableBalance: '2500' },
     ]);
 
     const handleInput = (e) => {
@@ -56,27 +60,91 @@ export default function OrderPurchaseForm() {
     };
 
     const handleItemChange = (index, e) => {
-        const newItems = data.items.map((item, i) => {
-            if (i === index) {
-                return { ...item, [e.target.name]: e.target.value };
+        const { name, value } = e.target;
+        const selectedOption = e.target.options?.[e.target.selectedIndex];
+        const itemUnit = selectedOption ? selectedOption.getAttribute('data-item_unit') : '';
+
+        const newItems = [...data.items];
+        const currentItem = newItems[index];
+
+        if (name === 'itemId') {
+            const selectedItem = itemData.find(item => item._id === value);
+
+            if (selectedItem) {
+                currentItem.itemUnit = selectedItem.itemUnit;
             }
-            return item;
+
+            currentItem.serials = [];
+        } else if (name === 'itemUnit' || name === 'itemUnitQuantity') {
+            currentItem.serials = [];
+        }
+
+        newItems[index] = {
+            ...currentItem,
+            [name]: value,
+            subTotal: calculateItemSubtotal({
+                ...currentItem,
+                [name]: value
+            })
+        };
+
+        setData({ ...data, items: newItems }, () => {
+            calculateTotal(newItems);
         });
-        setData({ ...data, items: newItems });
-        calculateItem(index, newItems);
+    };
+
+    const calculateItemSubtotal = (item) => {
+        const itemUnit = item?.itemUnit
+        const itemUnitQuantity = parseFloat(item.itemUnitQuantity) || 0;
+        const price = parseFloat(item.price) || 0;
+        const discountPercent = parseFloat(item.discountPercent) || 0;
+        const discountRupee = parseFloat(item.discountRupee) || 0;
+        const cgst = parseFloat(item.cgst) || 0;
+        const sgst = parseFloat(item.sgst) || 0;
+        const igst = parseFloat(item.igst) || 0;
+        
+        const discountAmountPercent = (price * discountPercent) / 100;
+        const effectivePrice = price - (discountAmountPercent + discountRupee);
+        const taxAmount = (effectivePrice * (cgst + sgst + igst)) / 100;
+        var finalTotal = effectivePrice + taxAmount;
+        
+        // debugger;
+        // if (itemUnit == 'pcs' && itemUnitQuantity > 0) {
+        //     finalTotal * itemUnitQuantity
+        // }
+        // console.log(itemUnit, itemUnitQuantity);
+        return finalTotal;
+    };
+
+    const handleSerialChange = (itemIndex, serialIndex, e) => {
+        const { name, value } = e.target;
+        const newItems = [...data.items];
+        
+        if (!newItems[itemIndex].serials) {
+            newItems[itemIndex].serials = [];
+        }
+    
+        if (!newItems[itemIndex].serials[serialIndex]) {
+            newItems[itemIndex].serials[serialIndex] = {};
+        }
+    
+        newItems[itemIndex].serials[serialIndex][name] = value;
+        
+        setData({ ...data, items: newItems }, () => {
+            calculateTotal(newItems);
+        });
     };
 
     const addItem = () => {
         setData({
             ...data,
-            items: [...data.items, { batchNumber: '', lotNumber: '', serialNumber: '', itemId: '', price: '', itemUnitQuantity: '', itemSubUnitQuantity: '', discountPercent: '', discountRupee: '', cgst: '', sgst: '', igst: '', subTotal: '' }]
+            items: [...data.items, { itemId: '', itemUnit: '', price: '', itemUnitQuantity: '', itemSubUnitQuantity: '', discountPercent: '', discountRupee: '', cgst: '', sgst: '', igst: '', subTotal: '' }]
         });
     };
 
     const removeItem = (index) => {
         const newItems = data.items.filter((item, i) => i !== index);
         setData({ ...data, items: newItems }, () => calculateTotal(newItems));
-        // setData({ ...data, items: newItems });
     };
 
     const calculateItem = (index, items) => {
@@ -89,7 +157,7 @@ export default function OrderPurchaseForm() {
         const igst = parseFloat(item.igst) || 0;
 
         const discountAmountPercent = (price * discountPercent) / 100;
-        const effectivePrice = price - discountAmountPercent - discountRupee;
+        const effectivePrice = price - (discountAmountPercent + discountRupee);
         const taxAmount = (effectivePrice * (cgst + sgst + igst)) / 100;
         const subTotal = effectivePrice + taxAmount;
 
@@ -97,17 +165,16 @@ export default function OrderPurchaseForm() {
         newItems[index] = { ...item, subTotal };
 
         setData({ ...data, items: newItems }, () => calculateTotal(newItems));
-        // setData({ ...data, items: newItems });
     };
 
     const calculateTotal = (items) => {
         let totalDiscountPercent = 0;
         let totalDiscountRupees = 0;
         let grandTotal = 0;
-    
+
         data?.items.forEach(item => {
             grandTotal += item.subTotal;
-        
+
             if (item.discountPercent !== "") {
                 const discountPercent = parseFloat(item.discountPercent);
                 totalDiscountPercent += discountPercent;
@@ -116,9 +183,12 @@ export default function OrderPurchaseForm() {
                 totalDiscountRupees += parseFloat(item.discountRupee);
             }
         });
-    
+
         setData({ ...data, totalDiscountPercent, totalDiscountRupees, grandTotal });
     };
+    const refreshGrandTotal = () => {
+        calculateTotal(data.items)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -136,7 +206,8 @@ export default function OrderPurchaseForm() {
     }, []);
     
     React.useEffect(() => {
-        calculateTotal()
+        // calculateTotal(data.items);
+        calculateTotal();
     }, [data]);
 
     return (
@@ -163,7 +234,7 @@ export default function OrderPurchaseForm() {
                                             name='billNumber'
                                             value={data?.billNumber} 
                                             size='small'
-                                            className='w-100 mb-4' 
+                                            className='w-100 mb-3' 
                                             label="Enter Bill Number" 
                                             variant="standard"
                                             onChange={handleInput} 
@@ -177,7 +248,7 @@ export default function OrderPurchaseForm() {
                                             name='billDate'
                                             value={data?.billDate}  
                                             size='small' 
-                                            className='w-100 mb-4 mt-3'
+                                            className='w-100 mb-3 mt-3'
                                             variant="standard"
                                             onChange={handleInput} 
                                             required 
@@ -187,49 +258,40 @@ export default function OrderPurchaseForm() {
                                         <Autocomplete
                                             id="vendorId"
                                             options={vendorData}
-                                            getOptionLabel={(option) => option.vendorName}
-                                            value={vendorData.find((vendor) => vendor._id === data?.vendorId) || null}
-                                            onChange={(event, value)=>{
-                                                setData({
-                                                    ...data,
-                                                    vendorId: value ? value._id : ''
-                                                })
-                                            }}
+                                            getOptionLabel={(option) => `${option.vendorName} (${option.vendorEmail})`}
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
-                                                    label="Vendor"
+                                                    label="Select Vendor"
                                                     variant="standard"
                                                     size="small"
-                                                    className="w-100 mb-4"
                                                     required
                                                 />
                                             )}
+                                            value={vendorData.find(v => v._id === data?.vendorId) || null}
+                                            onChange={(e, newValue) => {
+                                                setData({ ...data, vendorId: newValue ? newValue._id : '' });
+                                            }}
                                         />
                                     </div>
                                     <div className="col-md-3">
-                                        <FormControl variant="standard">
-                                            <InputLabel id="demo-simple-select-standard-label">Status*</InputLabel>
+                                        <FormControl variant="standard" className='w-100 mb-3'>
+                                            <InputLabel id="orderStatus">Order Status</InputLabel>
                                             <Select
-                                                labelId="demo-simple-select-standard-label"
+                                                labelId="orderStatus"
                                                 id="orderStatus"
-                                                label="Status"
-                                                name='orderStatus'
+                                                name="orderStatus"
                                                 value={data?.orderStatus}
-                                                className='mb-4'
-                                                size='small'
-                                                variant="standard"
                                                 onChange={handleInput}
-                                                required
+                                                size="small"
                                             >
-                                                <MenuItem value="Pending">Pending</MenuItem>
-                                                <MenuItem value="Completed">Completed</MenuItem>
-                                                <MenuItem value="Cancelled">Cancelled</MenuItem>
+                                                <MenuItem value='Pending'>Pending</MenuItem>
+                                                <MenuItem value='Completed'>Completed</MenuItem>
+                                                <MenuItem value='Cancelled'>Cancelled</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>
-
-                                    <div className='col-md-12 mb-3'>
+                                    <div className='col-md-9 mb-3'>
                                         <div className='d-flex flex-wrap align-items-center justify-content-between gap-3'>
                                             <h5>Item List</h5>
                                             <Button 
@@ -243,286 +305,322 @@ export default function OrderPurchaseForm() {
                                             </Button>
                                         </div>
                                     </div>
-                                    <div className="col-md-12">
-                                        {
-                                            data?.items?.map((item, index) => (
-                                                <div key={index} className='border custom-shadow-light p-2 mb-4'>
-                                                    <div className='d-flex justify-content-between'>
-                                                        <h6>Item {index + 1}</h6>
-                                                        <CloseIcon role="button" onClick={() => removeItem(index)} />
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-md-2">
-                                                            <TextField 
-                                                                id="batchNumber" 
-                                                                name='batchNumber'
-                                                                value={item.batchNumber} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Batch Number" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-2">
-                                                            <TextField 
-                                                                id="lotNumber" 
-                                                                name='lotNumber'
-                                                                value={item.lotNumber} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter LOT Number" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)}
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-2">
-                                                            <TextField 
-                                                                id="serialNumber" 
-                                                                name='serialNumber'
-                                                                value={item.serialNumber} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Serial Number" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)}
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <FormControl variant="standard">
-                                                                <InputLabel id="demo-simple-select-standard-label">Item*</InputLabel>
-                                                                <Select
-                                                                    labelId="demo-simple-select-standard-label"
-                                                                    id="itemId"
-                                                                    label="Item"
-                                                                    name='itemId'
-                                                                    value={item.itemId}
-                                                                    className='mb-4'
-                                                                    size='small'
-                                                                    variant="standard"
-                                                                    onChange={(e) => handleItemChange(index, e)}
-                                                                    required
-                                                                >
-                                                                    {
-                                                                        itemData?.map((val,key)=>(
-                                                                            <MenuItem key={key} value={val?._id}>{val?.itemName}</MenuItem>
-                                                                        ))
-                                                                    }
-                                                                </Select>
-                                                            </FormControl>
-                                                        </div>
-                                                        <div className="col-md-2">
-                                                            <TextField 
-                                                                id="price" 
-                                                                name='price'
-                                                                value={item.price} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Price" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)}
-                                                                required
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="itemUnitQuantity" 
-                                                                name='itemUnitQuantity'
-                                                                value={item.itemUnitQuantity} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Unit Quantity" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                                required
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="itemSubUnitQuantity" 
-                                                                name='itemSubUnitQuantity'
-                                                                value={item.itemSubUnitQuantity} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Sub Unit Quantity" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="discountPercent" 
-                                                                name='discountPercent'
-                                                                value={item.discountPercent} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Discount Percent" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="discountRupee" 
-                                                                name='discountRupee'
-                                                                value={item.discountRupee} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Discount Amount" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="cgst" 
-                                                                name='cgst'
-                                                                value={item.cgst} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter CGST" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="sgst" 
-                                                                name='sgst'
-                                                                value={item.sgst} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter SGST" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="igst" 
-                                                                name='igst'
-                                                                value={item.igst} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter IGST" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                            />
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <TextField 
-                                                                type='number'
-                                                                id="subTotal" 
-                                                                name='subTotal'
-                                                                value={item.subTotal} 
-                                                                size='small'
-                                                                className='w-100 mb-4' 
-                                                                label="Enter Sub Total" 
-                                                                variant="standard"
-                                                                onChange={(e) => handleItemChange(index, e)} 
-                                                                readOnly
-                                                            />
-                                                        </div>
-                                                    </div>
+                                    <div className="col-md-3"></div>
+                                    <div className="col-md-9">
+                                        {data.items.map((item, index) => (
+                                            <div key={index} className='border custom-shadow-light p-2 mb-4'>
+                                                <div className='w-100 d-flex align-items-center justify-content-between'>
+                                                    <h6>Item {index + 1}</h6>
+                                                    <Tooltip title="Remove" onClick={() => removeItem(index)}>
+                                                        <IconButton>
+                                                            <CloseIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 </div>
-                                            ))
-                                        }
-                                    </div>
-                                    {
-                                        data?.items?.length > 0 &&
-                                        <>
-                                            <div className="col-md-8"></div>
-                                            <div className="col-md-4">
-                                                <div className='border custom-shadow-light p-2 mb-4'>
-                                                    <FormControl variant="standard">
-                                                        <InputLabel id="paymentMode">Payment Mode</InputLabel>
-                                                        <Select
-                                                            labelId="paymentMode"
-                                                            id="paymentMode"
-                                                            name='paymentMode'
-                                                            size='small'
-                                                            value={data?.paymentMode}
-                                                            onChange={handleInput}
-                                                            label="Payment Mode"
-                                                        >
-                                                            <MenuItem value="Cash">Cash</MenuItem>
-                                                            <MenuItem value="Online">Online</MenuItem>
-                                                        </Select>
-                                                    </FormControl>
-                                                    {
-                                                        data?.paymentMode === 'Online' &&
-                                                        <FormControl variant="standard">
-                                                            <InputLabel id="depositedInBank">Select Bank</InputLabel>
+                                                <div className='row'>
+                                                    <div className="col-md-4">
+                                                        <Autocomplete
+                                                            options={itemData}
+                                                            getOptionLabel={(option) => `${option.itemName} (${option.hsnNumber})`}
+                                                            renderInput={(params) => (
+                                                                <TextField
+                                                                    {...params}
+                                                                    label="Select Item"
+                                                                    variant="standard"
+                                                                    size="small"
+                                                                    required
+                                                                />
+                                                            )}
+                                                            value={itemData.find(i => i._id === item?.itemId) || null}
+                                                            onChange={(e, newValue) => {
+                                                                handleItemChange(index, { target: { name: 'itemId', value: newValue ? newValue._id : '' } });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <FormControl variant="standard" className='w-100 mb-3'>
+                                                            <InputLabel id={`itemUnit-${index}`}>Unit</InputLabel>
                                                             <Select
-                                                                labelId="depositedInBank"
-                                                                id="depositedInBank"
-                                                                name='depositedInBank'
-                                                                size='small'
-                                                                value={data?.depositedInBank}
-                                                                onChange={handleInput}
-                                                                label="Select Bank"
+                                                                labelId={`itemUnit-${index}`}
+                                                                id={`itemUnit-${index}`}
+                                                                name="itemUnit"
+                                                                value={item?.itemUnit}
+                                                                onChange={(e) => handleItemChange(index, e)}
+                                                                size="small"
+                                                                readOnly
                                                             >
-                                                                {
-                                                                    bankData?.map((val,key)=>(
-                                                                        <MenuItem key={key} value={val?._id}>{val?.bankName}</MenuItem>
-                                                                    ))
-                                                                }
+                                                                <MenuItem value='kg'>Kilogram</MenuItem>
+                                                                <MenuItem value='lt'>Litre</MenuItem>
+                                                                <MenuItem value='m'>Meter</MenuItem>
+                                                                <MenuItem value='ft'>Feet</MenuItem>
+                                                                <MenuItem value='pcs'>Pieces</MenuItem>
                                                             </Select>
                                                         </FormControl>
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`itemUnitQuantity-${index}`}
+                                                            name='itemUnitQuantity'
+                                                            value={item?.itemUnit == 'Pcs' ? '' : item.itemUnitQuantity}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="Unit Quantity"
+                                                            variant="standard"
+                                                            type='number'
+                                                            inputProps={{ min: 1 }}
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                            required
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`itemSubUnitQuantity-${index}`}
+                                                            name='itemSubUnitQuantity'
+                                                            value={item.itemSubUnitQuantity}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="Sub Unit Quantity"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`price-${index}`}
+                                                            name='price'
+                                                            value={item.price}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="Price"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                            required
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="row serialsRows">
+                                                    {item?.itemUnit === 'pcs'
+                                                        ? [...Array(parseInt(data.items[index].itemUnitQuantity || 0)).keys()].map(serialIndex => (
+                                                            <React.Fragment key={serialIndex}>
+                                                                <div className="col-md-2">
+                                                                    <TextField
+                                                                        id={`batchNumber-${index}-${serialIndex}`}
+                                                                        name='batchNumber'
+                                                                        value={(data.items[index].serials && data.items[index].serials[serialIndex]?.batchNumber) || ''}
+                                                                        size='small'
+                                                                        className='w-100 mb-3'
+                                                                        label={`Batch Number ${serialIndex + 1}`}
+                                                                        variant="standard"
+                                                                        onChange={(e) => handleSerialChange(index, serialIndex, e)}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-2">
+                                                                    <TextField
+                                                                        id={`lotNumber-${index}-${serialIndex}`}
+                                                                        name='lotNumber'
+                                                                        value={(data.items[index].serials && data.items[index].serials[serialIndex]?.lotNumber) || ''}
+                                                                        size='small'
+                                                                        className='w-100 mb-3'
+                                                                        label={`LOT Number ${serialIndex + 1}`}
+                                                                        variant="standard"
+                                                                        onChange={(e) => handleSerialChange(index, serialIndex, e)}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-2">
+                                                                    <TextField
+                                                                        id={`serialNumber-${index}-${serialIndex}`}
+                                                                        name='serialNumber'
+                                                                        value={(data.items[index].serials && data.items[index].serials[serialIndex]?.serialNumber) || ''}
+                                                                        size='small'
+                                                                        className='w-100 mb-3'
+                                                                        label={`Serial Number ${serialIndex + 1}`}
+                                                                        variant="standard"
+                                                                        onChange={(e) => handleSerialChange(index, serialIndex, e)}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-6"></div>
+                                                            </React.Fragment>
+                                                        ))
+                                                        : (
+                                                            <>
+                                                                <div className="col-md-2">
+                                                                    <TextField
+                                                                        id={`batchNumber-${index}-0`}
+                                                                        name='batchNumber'
+                                                                        value={(data.items[index].serials && data.items[index].serials[0]?.batchNumber) || ''}
+                                                                        size='small'
+                                                                        className='w-100 mb-3'
+                                                                        label="Batch Number 1"
+                                                                        variant="standard"
+                                                                        onChange={(e) => handleSerialChange(index, 0, e)}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-2">
+                                                                    <TextField
+                                                                        id={`lotNumber-${index}-0`}
+                                                                        name='lotNumber'
+                                                                        value={(data.items[index].serials && data.items[index].serials[0]?.lotNumber) || ''}
+                                                                        size='small'
+                                                                        className='w-100 mb-3'
+                                                                        label="LOT Number 1"
+                                                                        variant="standard"
+                                                                        onChange={(e) => handleSerialChange(index, 0, e)}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-2">
+                                                                    <TextField
+                                                                        id={`serialNumber-${index}-0`}
+                                                                        name='serialNumber'
+                                                                        value={(data.items[index].serials && data.items[index].serials[0]?.serialNumber) || ''}
+                                                                        size='small'
+                                                                        className='w-100 mb-3'
+                                                                        label="Serial Number 1"
+                                                                        variant="standard"
+                                                                        onChange={(e) => handleSerialChange(index, 0, e)}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-6"></div>
+                                                            </>
+                                                        )
                                                     }
                                                 </div>
-                                            </div>
-                                            <div className="col-md-8"></div>
-                                            <div className="col-md-4">
-                                                <div className='border custom-shadow-light p-2 mb-4'>
-                                                    <div className='d-flex justify-content-between w-100'>
-                                                        <div className='fw-bold text-secondary'>Summary</div>
-                                                        <div>&nbsp;</div>
+                                                <div className="row">
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`discountPercent-${index}`}
+                                                            name='discountPercent'
+                                                            value={item.discountPercent}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="Discount%"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
                                                     </div>
-                                                    <hr />
-                                                    <div className='d-flex justify-content-between w-100 mb-3'>
-                                                        <div className='text-secondary fw-bold'>Total Discount</div>
-                                                        <div>{data?.totalDiscountRupees}/-</div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`discountRupee-${index}`}
+                                                            name='discountRupee'
+                                                            value={item.discountRupee}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="Discount ₹"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
                                                     </div>
-                                                    <div className='d-flex justify-content-between w-100'>
-                                                        <div className='text-secondary fw-bold'>Grand Total</div>
-                                                        <div>{data?.grandTotal}/-</div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`cgst-${index}`}
+                                                            name='cgst'
+                                                            value={item.cgst}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="CGST%"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`sgst-${index}`}
+                                                            name='sgst'
+                                                            value={item.sgst}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="SGST%"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`igst-${index}`}
+                                                            name='igst'
+                                                            value={item.igst}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="IGST%"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        <TextField
+                                                            id={`subTotal-${index}`}
+                                                            name='subTotal'
+                                                            value={item.subTotal}
+                                                            size='small'
+                                                            className='w-100 mb-3'
+                                                            label="Sub Total"
+                                                            variant="standard"
+                                                            type='number'
+                                                            onChange={(e) => handleItemChange(index, e)}
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className='col-md-12'>
-                                                <div className='d-flex align-items-center justify-content-center gap-4'>
-                                                    <Button 
-                                                        variant="outlined" 
-                                                        color="error"
-                                                        size="small"
-                                                        onClick={()=>{
-                                                            setTimeout(() => {
-                                                                navigate(-1);
-                                                            }, 500);
-                                                        }}
-                                                    >
-                                                        Cancel
-                                                    </Button>
-                                                    <Button 
-                                                        type='submit' 
-                                                        size="small" 
-                                                        className='bg-primary' 
-                                                        variant="contained"
-                                                    >
-                                                        Proceed
-                                                    </Button>
-                                                </div>
+                                        ))}
+                                    </div>
+                                    <div className="col-md-3">
+                                        <div className='border custom-shadow-light p-2 mb-4'>
+                                            <div className='d-flex justify-content-between w-100'>
+                                                <div className='fw-bold text-secondary mt-2'>Summary</div>
+                                                <div>&nbsp;</div>
                                             </div>
-                                        </>
-                                    }
+                                            <hr />
+                                            <div className='d-flex justify-content-between w-100 mb-3'>
+                                                <div className='text-secondary'>Total Discount %</div>
+                                                <div>{data?.totalDiscountPercent}%</div>
+                                            </div>
+                                            <div className='d-flex justify-content-between w-100 mb-3'>
+                                                <div className='text-secondary'>Total Discount ₹</div>
+                                                <div>{data?.totalDiscountRupees}/-</div>
+                                            </div>
+                                            <hr />
+                                            <div className='d-flex justify-content-between w-100 mb-2'>
+                                                <div className='text-secondary fw-bold'>Grand Total</div>
+                                                {/* <div>
+                                                    <span>{data?.grandTotal}/-</span>
+                                                    <Tooltip title="Remove" onClick={refreshGrandTotal}>
+                                                        <IconButton>
+                                                            <RefreshIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </div> */}
+                                                <div>{data?.grandTotal}/-</div>
+                                            </div>
+                                        </div>
+                                        <div className='d-flex align-items-center justify-content-center gap-4'>
+                                            <Button 
+                                                variant="outlined" 
+                                                color="error"
+                                                size="small"
+                                                onClick={()=>{
+                                                    setTimeout(() => {
+                                                        navigate(-1);
+                                                    }, 500);
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button 
+                                                type='submit' 
+                                                size="small" 
+                                                className='bg-primary' 
+                                                variant="contained"
+                                            >
+                                                Proceed
+                                            </Button>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
