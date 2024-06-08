@@ -4,6 +4,10 @@ const mongoose = require("mongoose")
 //  -----------------------------------{Customer Model }------------------------------------------
 
  const CustomerSchema = new  mongoose.Schema({
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
     CustomerName: {type:String, required: true},
     CustomerEmail:{type:String, required: true, unique: true },
     CustomerPhone:{type:String, required: true,unique: true},

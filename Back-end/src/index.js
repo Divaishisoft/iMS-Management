@@ -3,6 +3,7 @@ const dbConnect = require("../config/db");
 const authRouter = require("../Routes/user.Route");
 const VenderRouter = require("../Routes/Vender.Route")
 const CustomerRoutes = require("../Routes/Customer.Route")
+const ProductRoute = require("../Routes/Product.Route")
 const cors = require("cors");
 
 const app = express();
@@ -31,6 +32,7 @@ app.get("/", (req, res) => res.send("Hello My ISM User"));
 app.use("/user", authRouter);
 app.use('/vender',VenderRouter)
 app.use('/customer',CustomerRoutes)
+app.use('/product',ProductRoute)
 
 
 app.listen(8080, async () => {
