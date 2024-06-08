@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BarChart } from '@mui/x-charts/BarChart';
+import gsap from 'gsap';
 
 const BarChartComponent = () => {
 
@@ -16,17 +17,27 @@ const BarChartComponent = () => {
         'Page G',
     ];
 
+    useEffect(()=>{
+        gsap.to('.bar', {
+            x: 5,
+            duration: 1,
+            startAt: { x: -100 },
+        })
+    },[])
+
     return (
         <>
-            <BarChart
-                width={500}
-                height={300}
-                series={[
-                    { data: pData, label: 'pv', id: 'pvId' },
-                    { data: uData, label: 'uv', id: 'uvId' },
-                ]}
-                xAxis={[{ data: xLabels, scaleType: 'band' }]}
-            />
+            <div className='bar'>
+                <BarChart
+                    width={500}
+                    height={300}
+                    series={[
+                        { data: pData, label: 'pv', id: 'pvId' },
+                        { data: uData, label: 'uv', id: 'uvId' },
+                    ]}
+                    xAxis={[{ data: xLabels, scaleType: 'band' }]}
+                />
+            </div>
         </>
     )
 }

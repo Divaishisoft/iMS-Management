@@ -14,6 +14,7 @@ import PieChartComponent from '../../Components/Charts/PieChart';
 import FullPageLoader from '../../Components/Loader/FullPageLoader';
 import LineChartComponent from '../../Components/Charts/LineChart';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import gsap from 'gsap';
 
 export default function DashboardIndex() {
 
@@ -27,6 +28,15 @@ export default function DashboardIndex() {
         { url: '/day-book', icon: <AutoStoriesIcon fontSize='large' />, menu: 'Day Book' },
     ]) 
     const [fullPageLoading, setFullPageLoading] = React.useState(true)
+
+    React.useEffect(()=>{
+        gsap.to('.dashDetailSection', {
+            // x: 1,
+            duration: 1,
+            rotation: 360,
+            startAt: { x: -100 },
+        })
+    },[])
 
     React.useEffect(()=>{
         setTimeout(() => {
@@ -79,7 +89,7 @@ export default function DashboardIndex() {
                         <LineChartComponent />
                     </div>
                     <div className="col-md-4">
-                        <div className='bg-white rounded px-3 py-2 custom-shadow-light fs-5'>
+                        <div className='bg-white dashDetailSection rounded px-3 py-2 custom-shadow-light fs-5'>
                             <div className='d-flex align-items-center justify-content-between pt-3'>
                                 <div className='text-secondary'>Total Order Sales Pending</div>
                                 <div className='text-primary fw-bold'>10</div>

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
+import gsap from 'gsap';
 
 const LineChartComponent = () => {
 
@@ -15,18 +16,28 @@ const LineChartComponent = () => {
         'Page F',
         'Page G',
     ];
+
+    useEffect(()=>{
+        gsap.to('.line', {
+            x: 5,
+            duration: 1,
+            startAt: { x: -100 },
+        })
+    },[])
     
     return (
         <>
-            <LineChart
-                width={700}
-                height={400}
-                series={[
-                    { data: pData, label: 'pv' },
-                    { data: uData, label: 'uv' },
-                ]}
-                xAxis={[{ scaleType: 'point', data: xLabels }]}
-            />
+            <div className='line'>
+                <LineChart
+                    width={700}
+                    height={400}
+                    series={[
+                        { data: pData, label: 'pv' },
+                        { data: uData, label: 'uv' },
+                    ]}
+                    xAxis={[{ scaleType: 'point', data: xLabels }]}
+                />
+            </div>
         </>
     )
 }

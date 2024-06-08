@@ -19,6 +19,9 @@ import OrderSellDetail from './AuthPages/Pages/OrderSell/Detail'
 import OrderSellForm from './AuthPages/Pages/OrderSell/Form'
 import BankList from './AuthPages/Pages/Bank/List'
 import BankForm from './AuthPages/Pages/Bank/Form'
+import UserList from './AuthPages/Pages/User/List'
+import UserForm from './AuthPages/Pages/User/Form'
+import FirmSelect from './AuthPages/Pages/FirmSelect/Index'
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
       
         {/* Protected Routes */}
 
+        {/* Firm Select */}
+        <Route path="/admin/firm-select" element={<FirmSelect />} />
+
         {/* Dashboard */}
         <Route path="/admin/dashboard" element={<DashboardIndex />} />
         
@@ -44,6 +50,11 @@ function App() {
         <Route path="/admin/vendors" element={<VendorList />} />
         <Route path="/admin/vendor-add" element={<VendorForm />} />
         <Route path="/admin/vendor-edit/:id" element={<VendorForm />} />
+        
+        {/* User */}
+        <Route path="/admin/users" element={<UserList />} />
+        <Route path="/admin/user-add" element={<UserForm />} />
+        <Route path="/admin/user-edit/:id" element={<UserForm />} />
         
         {/* Customer */}
         <Route path="/admin/customers" element={<CustomerList />} />
