@@ -4,6 +4,10 @@ const mongoose = require("mongoose")
 //  -----------------------------------{Venders Model }------------------------------------------
 
  const VenderSchema = new  mongoose.Schema({
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
     VenderName: {type:String, required: true},
     VenderEmail:{type:String, required: true, unique: true },
     VenderPhone:{type:String, required: true,unique: true},
